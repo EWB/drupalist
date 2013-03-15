@@ -1,0 +1,52 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Juicebox module.
+ */
+
+
+/**
+ * Implements hook_requirements().
+ */
+function juicebox_requirements($phase) {
+  $requirements = array();
+  $t = get_t();
+  // Check on the installation status of the Juicebox library. Note that
+  // we do not do this check during the 'install' phase as the libraries API
+  // functions will not always be available then (if installing Drupal via an
+  // install profile, etc.).
+  if ($phase == 'runtime') {
+    $library = libraries_detect('juicebox');
+    $requirements['juicebox'] = array(
+      'title' => $t('Juicebox Javascript Library'),
+    );
+    if ($library['installed']) {
+      $requirements['juicebox']['value'] = $library['version'];
+      $requirements['juicebox']['severity'] = REQUIREMENT_OK;
+    }
+    else {
+      $requirements['juicebox']['value'] = $library['error'];
+      $requirements['juicebox']['description'] = $library['error message'];
+      $requirements['juicebox']['severity'] = REQUIREMENT_ERROR;
+    }
+  }
+  return $requirements;
+}
+
+
+/*********** To be implimented if an XML caching solution is setup*********/
+/**
+ * Implements hook_schema().
+
+function juicebox_schema() {
+  // Setup a special cache table to hold the XML for any gallery rendered with
+  // this module. This gives us a place to "stash" the XML while rendering the
+  // main embed code (so that we only have to build it once). This is necessary
+  // as each gallery requires TWO page requests, one for the embed code and
+  // another, requested by the embed code, to pass the config XML data.
+  $schema['cache_juicebox'] = drupal_get_schema_unprocessed('system', 'cache');
+  $schema['cache_juicebox']['description'] = 'Cache table to store Juicebox conifg XML info across multiple path requests.';
+  return $schema;
+}
+*/

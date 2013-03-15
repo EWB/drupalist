@@ -1,0 +1,10 @@
+name = Mobile adaptive
+description = "Allows to test web-site in mobile device emulator."
+core = 7.x
+configure = admin/config/administration/admin_menu
+; Information added by drupal.org packaging script on 2013-02-19
+version = "7.x-1.3"
+core = "7.x"
+project = "mobileadaptivetest"
+datestamp = "1361266109"
+
